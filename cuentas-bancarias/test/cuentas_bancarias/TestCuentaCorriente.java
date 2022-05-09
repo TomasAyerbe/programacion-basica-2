@@ -7,67 +7,145 @@ import org.junit.Test;
 public class TestCuentaCorriente {
 
 	@Test
-	public void queSePuedaCrearUnaCuentaCorrienteConMontoDescubierto() {
-		Double saldo = 500.0;
-		Double montoDescubierto = 150.0;
-		
-		CuentaCorriente cuenta = new CuentaCorriente(saldo, montoDescubierto);
+	public void queSePuedaCrearUnaCuentaCorriente() {
+		CuentaCorriente cuenta = new CuentaCorriente();
 		
 		assertNotNull(cuenta);
 	}
 	
 	@Test
 	public void queSePuedaHacerUnDepositoEnUnaCuentaCorriente() {
-		Double saldo = 500.0;
-		Double montoDescubierto = 150.0;
+		CuentaCorriente cuenta = new CuentaCorriente();
 		
-		CuentaCorriente cuenta = new CuentaCorriente(saldo, montoDescubierto);
+		final Double IMPORTE_DEPOSITO = 100.0;
 		
-		Double importeDeposito = 100.0;
+		cuenta.depositar(IMPORTE_DEPOSITO);
 		
-		cuenta.depositar(importeDeposito);
+		final Double VE = IMPORTE_DEPOSITO;
 		
-		Double ve = saldo + importeDeposito;
+		final Double VO = cuenta.getSaldo();
 		
-		saldo = cuenta.getSaldo();
-		
-		assertEquals(ve, saldo);
+		assertEquals(VE, VO);
 	}
 	
 	@Test
-	public void queSePuedaHacerUnaExtraccionEnUnaCuentaCorriente() {
-		Double saldo = 100.0;
-		Double montoDescubierto = 150.0;
+	public void queSePuedaHacerUnaExtraccionMenorAlSaldoEnUnaCuentaCorriente() {
+		CuentaCorriente cuenta = new CuentaCorriente();
 		
-		CuentaCorriente cuenta = new CuentaCorriente(saldo, montoDescubierto);
+		final Double IMPORTE_DEPOSITO = 100.0;
 		
-		Double importeExtraccion = 50.0;
+		cuenta.depositar(IMPORTE_DEPOSITO);
 		
-		cuenta.extraer(importeExtraccion);
+		final Double IMPORTE_EXTRACCION = 50.0;
 		
-		Double ve = saldo - importeExtraccion;
+		cuenta.extraer(IMPORTE_EXTRACCION);
 		
-		saldo = cuenta.getSaldo();
+		final Double VE = IMPORTE_DEPOSITO - IMPORTE_EXTRACCION;
 		
-		assertEquals(ve, saldo);
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
 	}
 	
 	@Test
-	public void queSePuedaHacerUnaExtraccionMayorAlSaldoEnUnaCuentaCorriente() {
-		Double saldo = 100.0;
-		Double montoDescubierto = 150.0;
+	public void queSePuedaHacerUnaExtraccionIgualAlSaldoEnUnaCuentaCorriente() {
+		CuentaCorriente cuenta = new CuentaCorriente();
 		
-		CuentaCorriente cuenta = new CuentaCorriente(saldo, montoDescubierto);
+		final Double IMPORTE_DEPOSITO = 100.0;
 		
-		Double importeExtraccion = 200.0;
+		cuenta.depositar(IMPORTE_DEPOSITO);
 		
-		cuenta.extraer(importeExtraccion);
+		final Double IMPORTE_EXTRACCION = 100.0;
 		
-		Double ve = (saldo - importeExtraccion) * 1.05;
+		cuenta.extraer(IMPORTE_EXTRACCION);
 		
-		saldo = cuenta.getSaldo();
+		final Double VE = IMPORTE_DEPOSITO - IMPORTE_EXTRACCION;
 		
-		assertEquals(ve, saldo);
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
 	}
 
+	@Test
+	public void queSePuedaHacerUnaExtraccionMenorAlSaldoMasElDescubiertoEnUnaCuentaCorriente() {
+		CuentaCorriente cuenta = new CuentaCorriente();
+		
+		final Double IMPORTE_DEPOSITO = 100.0;
+		
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION = 200.0;
+		
+		cuenta.extraer(IMPORTE_EXTRACCION);
+				
+		final Double VE = 0.0;
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
+	}
+	
+	@Test
+	public void queSePuedaHacerUnaExtraccionIgualAlSaldoMasElDescubiertoEnUnaCuentaCorriente() {
+		CuentaCorriente cuenta = new CuentaCorriente();
+		
+		final Double IMPORTE_DEPOSITO = 100.0;
+		
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION = 250.0;
+		
+		cuenta.extraer(IMPORTE_EXTRACCION);
+				
+		final Double VE = 0.0;
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
+	}
+	
+	@Test
+	public void queNoSePuedaHacerUnaExtraccionMayorAlSaldoMasElDescubiertoEnUnaCuentaCorriente() {
+		CuentaCorriente cuenta = new CuentaCorriente();
+		
+		final Double IMPORTE_DEPOSITO = 100.0;
+		
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION = 300.0;
+		
+		cuenta.extraer(IMPORTE_EXTRACCION);
+		
+		final Double VE = IMPORTE_DEPOSITO;
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertFalse(cuenta.extraer(IMPORTE_EXTRACCION));
+		
+		assertEquals(VE, VO);
+	}
+	
+	@Test
+	public void queSeIncrementeLaDeudaCuandoSeHaceUnaExtraccion() {
+		CuentaCorriente cuenta = new CuentaCorriente();
+		
+		final Double IMPORTE_DEPOSITO = 100.0;
+		
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION1 = 200.0;
+		
+		cuenta.extraer(IMPORTE_EXTRACCION1);
+		
+		final Double IMPORTE_EXTRACCION2 = 50.0;
+		
+		cuenta.extraer(IMPORTE_EXTRACCION2);
+		
+		final Double VE = 157.50;
+		
+		final Double VO = cuenta.getDeuda();
+		
+		assertEquals(VE, VO);
+	}
+	
 }

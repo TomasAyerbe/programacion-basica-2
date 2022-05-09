@@ -1,34 +1,41 @@
 package cuentas_bancarias;
 
-public class CuentaCorriente {
+public class CuentaCorriente extends Cuenta{
 	
-	private Double saldo;
-	private Double montoDescubierto;
-
-	public CuentaCorriente (Double saldo, Double montoDescubierto) {
-		this.saldo = saldo;
-		this.montoDescubierto = montoDescubierto;
-	}
+	private final Double MONTO_DESCUBIERTO = 150.0;
+	private final Double COMISION = 1.05;
+	private Double descubiertoActual = 0.0;
+	private Double deuda = 0.0;
 	
-	public void setSaldo(Double saldo) {
-		this.saldo = saldo;
+	public CuentaCorriente () {
+		super();
 	}
 	
-	public Double getSaldo() {
-		return saldo;
+	public Double getMontoDescubierto() {
+		return MONTO_DESCUBIERTO;
+	}
+	
+	public Double getDeuda() {
+		return this.deuda;
 	}
 
-	public void depositar(Double importeDeposito) {
-		this.saldo += importeDeposito;
-	}
-
-	public void extraer(Double importeExtraccion) {
+	//Sobreescritura
+	@Override
+	public Boolean extraer(Double importeExtraccion) {
+		Double descubiertoInicial = descubiertoActual;
 		if (importeExtraccion <= saldo) {
 			this.saldo -= importeExtraccion;
+			return true;
 		} else {
-			this.saldo = (saldo - importeExtraccion) * 1.05;
+			if (importeExtraccion <= (saldo + (MONTO_DESCUBIERTO - descubiertoActual))) {
+				this.descubiertoActual += (importeExtraccion - saldo);
+				this.deuda += (descubiertoActual - descubiertoInicial) * COMISION; 
+				this.saldo = 0.0;
+				return true;
+			}
 		}
+		
+		return false;
 	}
 	
-
 }

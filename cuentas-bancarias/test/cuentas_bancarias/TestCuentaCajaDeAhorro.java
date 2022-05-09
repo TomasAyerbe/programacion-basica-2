@@ -8,62 +8,172 @@ public class TestCuentaCajaDeAhorro {
 
 	@Test
 	public void queSePuedaCrearUnaCuentaCajaDeAhorro() {
-		Double saldo = 500.0;
-		
-		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro(saldo);
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
 		
 		assertNotNull(cuenta);
 	}
 
 	@Test
 	public void queSePuedaHacerUnDepositoEnUnaCuentaCajaDeAhorro() {
-		Double saldo = 500.0;
-	
-		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro(saldo);
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
 		
-		Double importeDeposito = 100.0;
+		final Double IMPORTE_DEPOSITO = 100.0;
 		
-		cuenta.depositar(importeDeposito);
+		cuenta.depositar(IMPORTE_DEPOSITO);
 		
-		Double ve = saldo + importeDeposito;
+		final Double VE = IMPORTE_DEPOSITO;
 		
-		saldo = cuenta.getSaldo();
+		final Double VO = cuenta.getSaldo();
 		
-		assertEquals(ve, saldo);
+		assertEquals(VE, VO);
 	}
 	
 	@Test
-	public void queSePuedaHacerUnaExtraccionEnUnaCuentaCajaDeAhorro() {
-		Double saldo = 500.0;
+	public void queSePuedaHacerUnaExtraccionMenorAlSaldoEnUnaCuentaCajaDeAhorro() {
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
 		
-		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro(saldo);
+		final Double IMPORTE_DEPOSITO = 100.0;
 		
-		Double importeExtraccion = 100.0;
+		cuenta.depositar(IMPORTE_DEPOSITO);
 		
-		cuenta.extraer(importeExtraccion);
+		final Double IMPORTE_EXTRACCION = 50.0;
 		
-		Double ve = saldo - importeExtraccion;
+		cuenta.extraer(IMPORTE_EXTRACCION);
 		
-		saldo = cuenta.getSaldo();
+		final Double VE = IMPORTE_DEPOSITO - IMPORTE_EXTRACCION;
 		
-		assertEquals(ve, saldo);
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
+	}
+	
+	@Test
+	public void queSePuedaHacerUnaExtraccionIgualAlSaldoEnUnaCuentaCajaDeAhorro() {
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
+		
+		final Double IMPORTE_DEPOSITO = 100.0;
+		
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION = 100.0;
+		
+		cuenta.extraer(IMPORTE_EXTRACCION);
+		
+		final Double VE = IMPORTE_DEPOSITO - IMPORTE_EXTRACCION;
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
+	}
+	
+	@Test
+	public void queNoSePuedaHacerUnaExtraccionMayorAlSaldoEnUnaCuentaCajaDeAhorro() {
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
+		
+		final Double IMPORTE_DEPOSITO = 100.0;
+		
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION = 200.0;
+		
+		cuenta.extraer(IMPORTE_EXTRACCION);
+		
+		final Double VE = IMPORTE_DEPOSITO;
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertFalse(cuenta.extraer(IMPORTE_EXTRACCION));
+		
+		assertEquals(VE, VO);
 	}
 	
 	@Test
 	public void queDespuesDeLaQuintaExtraccionSeCobreAdicional() {
-		Double saldo = 500.0;
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
+		
+		final Double IMPORTE_DEPOSITO = 1000.0;
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION1 = 10.0;
+		cuenta.extraer(IMPORTE_EXTRACCION1);
+		
+		final Double IMPORTE_EXTRACCION2 = 20.0;
+		cuenta.extraer(IMPORTE_EXTRACCION2);
+		
+		final Double IMPORTE_EXTRACCION3 = 30.0;
+		cuenta.extraer(IMPORTE_EXTRACCION3);
+		
+		final Double IMPORTE_EXTRACCION4 = 40.0;
+		cuenta.extraer(IMPORTE_EXTRACCION4);
+		
+		final Double IMPORTE_EXTRACCION5 = 50.0;
+		cuenta.extraer(IMPORTE_EXTRACCION5);
+		
+		final Double IMPORTE_EXTRACCION6 = 60.0;
+		cuenta.extraer(IMPORTE_EXTRACCION6);
+		
+		final Double IMPORTE_ADICIONAL = 6.0;
+		
+		final Double VE = IMPORTE_DEPOSITO - (IMPORTE_EXTRACCION1 + IMPORTE_EXTRACCION2 + IMPORTE_EXTRACCION3 + IMPORTE_EXTRACCION4 + IMPORTE_EXTRACCION5 + IMPORTE_EXTRACCION6 + IMPORTE_ADICIONAL);
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
+	}
 	
-		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro(saldo);
+	@Test
+	public void queAntesDeLaQuintaExtraccionNoSeCobreAdicional() {
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
 		
-		Double importeExtraccion = 100.0;
+		final Double IMPORTE_DEPOSITO = 1000.0;
+		cuenta.depositar(IMPORTE_DEPOSITO);
 		
-		cuenta.extraccionConAdicional(importeExtraccion);
+		final Double IMPORTE_EXTRACCION1 = 10.0;
+		cuenta.extraer(IMPORTE_EXTRACCION1);
 		
-		Double ve = saldo - importeExtraccion - 6.0;
+		final Double IMPORTE_EXTRACCION2 = 20.0;
+		cuenta.extraer(IMPORTE_EXTRACCION2);
 		
-		saldo = cuenta.getSaldo();
+		final Double IMPORTE_EXTRACCION3 = 30.0;
+		cuenta.extraer(IMPORTE_EXTRACCION3);
 		
-		assertEquals(ve, saldo);
+		final Double IMPORTE_EXTRACCION4 = 40.0;
+		cuenta.extraer(IMPORTE_EXTRACCION4);
+		
+		final Double VE = IMPORTE_DEPOSITO - (IMPORTE_EXTRACCION1 + IMPORTE_EXTRACCION2 + IMPORTE_EXTRACCION3 + IMPORTE_EXTRACCION4);
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
+	}
+	
+	@Test
+	public void queEnLaQuintaExtraccionNoSeCobreAdicional() {
+		CuentaCajaDeAhorro cuenta = new CuentaCajaDeAhorro();
+		
+		final Double IMPORTE_DEPOSITO = 1000.0;
+		cuenta.depositar(IMPORTE_DEPOSITO);
+		
+		final Double IMPORTE_EXTRACCION1 = 10.0;
+		cuenta.extraer(IMPORTE_EXTRACCION1);
+		
+		final Double IMPORTE_EXTRACCION2 = 20.0;
+		cuenta.extraer(IMPORTE_EXTRACCION2);
+		
+		final Double IMPORTE_EXTRACCION3 = 30.0;
+		cuenta.extraer(IMPORTE_EXTRACCION3);
+		
+		final Double IMPORTE_EXTRACCION4 = 40.0;
+		cuenta.extraer(IMPORTE_EXTRACCION4);
+		
+		final Double IMPORTE_EXTRACCION5 = 50.0;
+		cuenta.extraer(IMPORTE_EXTRACCION5);
+		
+		final Double VE = IMPORTE_DEPOSITO - (IMPORTE_EXTRACCION1 + IMPORTE_EXTRACCION2 + IMPORTE_EXTRACCION3 + IMPORTE_EXTRACCION4 + IMPORTE_EXTRACCION5);
+		
+		final Double VO = cuenta.getSaldo();
+		
+		assertEquals(VE, VO);
 	}
 	
 }

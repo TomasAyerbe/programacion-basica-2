@@ -1,35 +1,36 @@
 package cuentas_bancarias;
 
-public class CuentaCajaDeAhorro {
+public class CuentaCajaDeAhorro extends Cuenta{
 
-	private Double saldo;
-
-	public CuentaCajaDeAhorro (Double saldo) {
-		this.saldo = saldo;
+	private final Double IMPORTE_ADICIONAL = 6.0;
+	private Integer cantidadExtracciones = 0;
+	
+	public CuentaCajaDeAhorro () {
+		super();
 	}
 	
-	public void setSaldo(Double saldo) {
-		this.saldo = saldo;
+	public Double getCobroAdicional() {
+		return IMPORTE_ADICIONAL;
 	}
 	
-	public Double getSaldo() {
-		return saldo;
-	}
-	
-	public void depositar(Double importeDeposito) {
-		this.saldo += importeDeposito;
-	}
-
-	public void extraer(Double importeExtraccion) {
-		if (importeExtraccion <= saldo) {
-			this.saldo -= importeExtraccion;
+	//Sobreescritura
+	@Override
+	public Boolean extraer(Double importeExtraccion) {
+		if (cantidadExtracciones < 5) {
+			if (importeExtraccion <= saldo) {
+				this.saldo -= importeExtraccion;
+				cantidadExtracciones++;
+				return true;
+			}
+		} else {
+			if (importeExtraccion <= (saldo + IMPORTE_ADICIONAL)) {
+				this.saldo -= (importeExtraccion + IMPORTE_ADICIONAL);
+				cantidadExtracciones++;
+				return true;
+			}
 		}
-	}
-	
-	public void extraccionConAdicional(Double importeExtraccion) {
-		if (importeExtraccion <= saldo) {
-			this.saldo -= (importeExtraccion + 6.0);
-		}
+		
+		return false;
 	}
 	
 }
