@@ -2,7 +2,7 @@ package cuentas_bancarias;
 
 public class Cuenta {
 	
-	Double saldo;
+	protected Double saldo;
 	
 	public Cuenta () {
 		saldo = 0.0;
