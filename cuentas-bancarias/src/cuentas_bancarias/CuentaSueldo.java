@@ -6,4 +6,8 @@ public class CuentaSueldo extends Cuenta {
 		super();
 	}
 	
+	public CuentaSueldo (String nombre, Integer dni, Double saldo) {
+		super(nombre, dni, saldo);
+	}
+	
 }

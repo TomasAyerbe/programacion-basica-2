@@ -11,6 +11,10 @@ public class CuentaCorriente extends Cuenta{
 		super();
 	}
 	
+	public CuentaCorriente (String nombre, Integer dni, Double saldo) {
+		super(nombre, dni, saldo);
+	}
+	
 	public Double getMontoDescubierto() {
 		return MONTO_DESCUBIERTO;
 	}

@@ -9,6 +9,10 @@ public class CuentaCajaDeAhorro extends Cuenta{
 		super();
 	}
 	
+	public CuentaCajaDeAhorro (String nombre, Integer dni, Double saldo) {
+		super(nombre, dni, saldo);
+	}
+	
 	public Double getCobroAdicional() {
 		return IMPORTE_ADICIONAL;
 	}
