@@ -10,4 +10,12 @@ public class Transaccion {
 		this.importeTransaccion = importeTransaccion;
 	}
 	
+	public String getmotivoTransaccion() {
+		return motivoTransaccion;
+	}
+	
+	public Double getimporteTransaccion() {
+		return importeTransaccion;
+	}
+	
 }
