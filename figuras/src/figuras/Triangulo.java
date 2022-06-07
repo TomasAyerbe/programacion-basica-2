@@ -17,6 +17,7 @@ public class Triangulo extends Figura {
 		this.altura = altura;
 	}
 	
+	@Override
 	public Double calcularArea() {
 		return ((base * altura) / 2);
 	}

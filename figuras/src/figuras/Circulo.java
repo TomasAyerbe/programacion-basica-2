@@ -15,6 +15,7 @@ public class Circulo extends Figura {
 		this.radio = radio;
 	}
 	
+	@Override
 	public Double calcularArea() {
 		return (PI * (radio * radio));
 	}
